@@ -7,14 +7,12 @@ app = FastAPI()
 def read_root():
     return {"message": "Hello, Render!"}
 
+# Bind to the port specified by the environment variable
 if __name__ == "__main__":
-    # Get the port from the environment variable
-    port = int(os.environ.get("PORT", 10000))  # Default to 10000 if not set by Render
+    port = int(os.environ.get("PORT", 10000))
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=port)
 
-from fastapi import FastAPI, Query
-from typing import Dict
 
 app = FastAPI()
 
