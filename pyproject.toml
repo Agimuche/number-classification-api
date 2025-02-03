@@ -9,8 +9,9 @@ readme = "README.md"
 fastapi = { version = ">=0.115.8,<0.116.0" }
 uvicorn = { version = ">=0.34.0,<0.35.0" }
 pytz = { version = ">=2025.1,<2026.0" }
+requests = { version = "*" }
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-requires-python = ">=3.13"
+requires-python = ">=3.9"
