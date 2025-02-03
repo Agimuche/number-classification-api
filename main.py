@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Query
-import requests
-from typing import Dict
-from math import sqrt
+from fastapi import FastAPI
 
 app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Number Classification API!"}
 
 # Function to check if a number is prime 
 def is_prime(n: int) -> bool:
