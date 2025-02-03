@@ -1,10 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from typing import Dict
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Number Classification API!"}
+@app.get("/classify")
+def classify_number(number: int = Query(..., description="Enter an integer")) -> Dict:
+    if number % 2 == 0:
+        return {"number": number, "classification": "even"}
+    else:
+        return {"number": number, "classification": "odd"}
 
 # Function to check if a number is prime 
 def is_prime(n: int) -> bool:
