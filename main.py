@@ -1,45 +1,26 @@
 from fastapi import FastAPI, Query
+import requests
 from typing import Dict
+from datetime import datetime
+from math import sqrt
 
 app = FastAPI()
 
-@app.get("/classify")
-def classify_number(number: int = Query(..., description="Enter an integer")) -> Dict:
-    return {"number": number, "classification": "even" if number % 2 == 0 else "odd"}
+GITHUB_URL = "https://github.com/Agimuche/number-classification-api"
+EMAIL = "Agimuche1@gmail.com"  # Change this to your real email
 
-
-# Bind to the port specified by the environment variable
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=port)
-
-
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Number Classification API!"}
-
-@app.get("/classify")
-def classify_number(number: int = Query(..., description="Enter an integer")) -> Dict:
-    if number % 2 == 0:
-        return {"number": number, "classification": "even"}
-    else:
-        return {"number": number, "classification": "odd"}
-
-# Function to check if a number is prime 
+# Function to check if a number is prime
 def is_prime(n: int) -> bool:
     if n < 2:
-        return False 
+        return False
     for i in range(2, int(sqrt(n)) + 1):
         if n % i == 0:
             return False
-    return True  # This should be outside the for loop
+    return True
 
 # Function to check if a number is perfect
 def is_perfect(n: int) -> bool:
-    return n > 1 and sum(i for i in range(1, n) if n % i == 0) == n 
+    return n > 1 and sum(i for i in range(1, n) if n % i == 0) == n
 
 # Function to check if a number is an Armstrong number
 def is_armstrong(n: int) -> bool:
@@ -51,10 +32,10 @@ def classify_number(number: int = Query(..., description="Enter an integer")) ->
     try:
         # Convert input to integer
         num = int(number)
-    except ValueError:  # Corrected to ValueError
+    except ValueError:
         return {"number": number, "error": True}
-    
-    # Classify the number 
+
+    # Classify the number
     prime = is_prime(num)
     perfect = is_perfect(num)
     armstrong = is_armstrong(num)
@@ -67,14 +48,14 @@ def classify_number(number: int = Query(..., description="Enter an integer")) ->
         properties.append("armstrong")
     properties.append(odd_or_even)
 
-    # Get fun fact from Number API
+    # Get fun fact from Numbers API
     fun_fact = "No fun fact found"
-    try: 
+    try:
         response = requests.get(f"http://numbersapi.com/{num}/math")
         if response.status_code == 200:
             fun_fact = response.text
     except Exception:
-        pass 
+        pass
 
     # Return JSON response
     return {
@@ -83,5 +64,8 @@ def classify_number(number: int = Query(..., description="Enter an integer")) ->
         "is_perfect": perfect,
         "properties": properties,
         "digit_sum": digit_sum,
-        "fun_fact": fun_fact
+        "fun_fact": fun_fact,
+        "current_datetime": datetime.utcnow().isoformat(),
+        "github_url": GITHUB_URL,
+        "email": EMAIL
     }
