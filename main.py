@@ -72,5 +72,5 @@ def classify_number(number: int = Query(..., description="Enter an integer")) ->
         "fun_fact": fun_fact,
         "current_datetime": datetime.utcnow().isoformat(),
         "github_url": "https://github.com/Agimuche/number-classification-api", 
-        "email": "Agimuche1@gmail.com", 
+        "email": "Agimuche1@gmail.com" 
         }
