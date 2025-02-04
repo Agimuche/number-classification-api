@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 
 app = FastAPI()
+app = FastAPI()
+
+@app.get("/classify")
+def classify_number(number: int = Query(..., description="Enter an integer")) -> Dict:
+    return {"number": number, "classification": "even" if number % 2 == 0 else "odd"}
 
 @app.get("/")
 def read_root():
