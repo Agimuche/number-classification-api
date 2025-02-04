@@ -5,10 +5,18 @@ app = FastAPI()
 
 @app.get("/classify")
 def classify_number(number: int = Query(..., description="Enter an integer")) -> Dict:
-    if number % 2 == 0:
-        return {"number": number, "classification": "even"}
+    if number > 0:
+        return {"number": number, "classification": "positive"}
+    elif number < 0:
+        return {"number": number, "classification": "negative"}
     else:
-        return {"number": number, "classification": "odd"}
+        return {"number": number, "classification": "zero"}
+
+if __name__ == "__main__":
+    import os
+    import uvicorn
+    port = int(os.environ.get("PORT", 10000))  # Bind to Render's port
+    uvicorn.run(app, host="0.0.0.0", port=port)
 
 # Function to check if a number is prime 
 def is_prime(n: int) -> bool:
