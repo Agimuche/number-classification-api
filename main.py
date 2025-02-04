@@ -1,11 +1,12 @@
-import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from typing import Dict
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello, Render!"}
+@app.get("/classify")
+def classify_number(number: int = Query(..., description="Enter an integer")) -> Dict:
+    return {"number": number, "classification": "even" if number % 2 == 0 else "odd"}
+
 
 # Bind to the port specified by the environment variable
 if __name__ == "__main__":
