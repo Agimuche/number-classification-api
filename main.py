@@ -1,12 +1,4 @@
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Number Classification API"}
-
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 import requests
 from typing import Dict
 from datetime import datetime
@@ -37,18 +29,12 @@ def is_armstrong(n: int) -> bool:
 
 @app.get("/api/classify-number")
 def classify_number(number: int = Query(..., description="Enter an integer")) -> Dict:
-    try:
-        # Convert input to integer
-        num = int(number)
-    except ValueError:
-        return {"number": number, "error": True}
-
     # Classify the number
-    prime = is_prime(num)
-    perfect = is_perfect(num)
-    armstrong = is_armstrong(num)
-    odd_or_even = "odd" if num % 2 != 0 else "even"
-    digit_sum = sum(int(digit) for digit in str(num))
+    prime = is_prime(number)
+    perfect = is_perfect(number)
+    armstrong = is_armstrong(number)
+    odd_or_even = "odd" if number % 2 != 0 else "even"
+    digit_sum = sum(int(digit) for digit in str(number))
 
     # Determine properties
     properties = []
@@ -59,15 +45,17 @@ def classify_number(number: int = Query(..., description="Enter an integer")) ->
     # Get fun fact from Numbers API
     fun_fact = "No fun fact found"
     try:
-        response = requests.get(f"http://numbersapi.com/{num}/math")
+        response = requests.get(f"http://numbersapi.com/{number}/math")
         if response.status_code == 200:
             fun_fact = response.text
-    except Exception:
-        pass
+        else:
+            fun_fact = f"Error fetching fun fact: {response.status_code}"
+    except requests.exceptions.RequestException as e:
+        fun_fact = f"Error fetching fun fact: {e}"
 
     # Return JSON response
     return {
-        "number": num,
+        "number": number,
         "is_prime": prime,
         "is_perfect": perfect,
         "properties": properties,
