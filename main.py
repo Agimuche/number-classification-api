@@ -70,7 +70,7 @@ def classify_number(number: int = Query(..., description="Enter an integer")) ->
         "properties": properties,
         "digit_sum": digit_sum,
         "fun_fact": fun_fact,
-        "current_datetime": datetime.utcnow().isoformat().
-        "github_url": GITHUB_URL,
-        "email": EMAIL
-    }
+        "current_datetime": datetime.utcnow().isoformat(),
+        "github_url": "https://github.com/Agimuche/number-classification-api", 
+        "email": "Agimuche1@gmail.com", 
+        }
